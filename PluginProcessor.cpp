@@ -11,7 +11,7 @@
 #include <algorithm>
 
 //==============================================================================
-Synth1AudioProcessor::Synth1AudioProcessor()
+DiplomSynthAudioProcessor::DiplomSynthAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -31,18 +31,18 @@ Synth1AudioProcessor::Synth1AudioProcessor()
     }
 }
 
-Synth1AudioProcessor::~Synth1AudioProcessor()
+DiplomSynthAudioProcessor::~DiplomSynthAudioProcessor()
 {
     
 }
 
 //==============================================================================
-const juce::String Synth1AudioProcessor::getName() const
+const juce::String DiplomSynthAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool Synth1AudioProcessor::acceptsMidi() const
+bool DiplomSynthAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -51,7 +51,7 @@ bool Synth1AudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool Synth1AudioProcessor::producesMidi() const
+bool DiplomSynthAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -60,7 +60,7 @@ bool Synth1AudioProcessor::producesMidi() const
    #endif
 }
 
-bool Synth1AudioProcessor::isMidiEffect() const
+bool DiplomSynthAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -69,37 +69,37 @@ bool Synth1AudioProcessor::isMidiEffect() const
    #endif
 }
 
-double Synth1AudioProcessor::getTailLengthSeconds() const
+double DiplomSynthAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int Synth1AudioProcessor::getNumPrograms()
+int DiplomSynthAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int Synth1AudioProcessor::getCurrentProgram()
+int DiplomSynthAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void Synth1AudioProcessor::setCurrentProgram (int index)
+void DiplomSynthAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String Synth1AudioProcessor::getProgramName (int index)
+const juce::String DiplomSynthAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void Synth1AudioProcessor::changeProgramName (int index, const juce::String& newName)
+void DiplomSynthAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void Synth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void DiplomSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     synth.setCurrentPlaybackSampleRate (sampleRate);
     
@@ -126,14 +126,14 @@ void Synth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     reverb.setParameters (reverbParams);
 }
 
-void Synth1AudioProcessor::releaseResources()
+void DiplomSynthAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool Synth1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool DiplomSynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -156,7 +156,7 @@ bool Synth1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) c
 }
 #endif
 
-void Synth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void DiplomSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -176,25 +176,25 @@ void Synth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
 }
 
 //==============================================================================
-bool Synth1AudioProcessor::hasEditor() const
+bool DiplomSynthAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* Synth1AudioProcessor::createEditor()
+juce::AudioProcessorEditor* DiplomSynthAudioProcessor::createEditor()
 {
-    return new Synth1AudioProcessorEditor (*this);
+    return new DiplomSynthAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void Synth1AudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void DiplomSynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void Synth1AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void DiplomSynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -204,10 +204,10 @@ void Synth1AudioProcessor::setStateInformation (const void* data, int sizeInByte
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new Synth1AudioProcessor();
+    return new DiplomSynthAudioProcessor();
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout Synth1AudioProcessor::createParams()
+juce::AudioProcessorValueTreeState::ParameterLayout DiplomSynthAudioProcessor::createParams()
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
@@ -263,14 +263,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout Synth1AudioProcessor::create
     return { params.begin(), params.end() };
 }
 
-void Synth1AudioProcessor::setParams()
+void DiplomSynthAudioProcessor::setParams()
 {
     setVoiceParams();
     setFilterParams();
     setReverbParams();
 }
 
-void Synth1AudioProcessor::setVoiceParams()
+void DiplomSynthAudioProcessor::setVoiceParams()
 {
     for (int i = 0; i < synth.getNumVoices(); ++i)
     {
@@ -315,7 +315,7 @@ void Synth1AudioProcessor::setVoiceParams()
     }
 }
 
-void Synth1AudioProcessor::setFilterParams()
+void DiplomSynthAudioProcessor::setFilterParams()
 {
     auto& filterType = *apvts.getRawParameterValue ("FILTERTYPE");
     auto& filterCutoff = *apvts.getRawParameterValue ("FILTERCUTOFF");
@@ -333,7 +333,7 @@ void Synth1AudioProcessor::setFilterParams()
     }
 }
 
-void Synth1AudioProcessor::setReverbParams()
+void DiplomSynthAudioProcessor::setReverbParams()
 {
     reverbParams.roomSize = *apvts.getRawParameterValue ("REVERBSIZE");
     reverbParams.width = *apvts.getRawParameterValue ("REVERBWIDTH");
